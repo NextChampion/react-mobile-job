@@ -1,27 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Button } from 'antd-mobile';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import BossInfo from './containers/bossinfo';
+import GeniusInfo from './containers/geniusinfo';
+import Login from './containers/login';
+import Register from './containers/register';
+import DashBoard from './components/dashboard';
 
 function App() {
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-        </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-        </a>
-                <Button>button</Button>
-            </header>
-        </div>
+        <BrowserRouter>
+            <Switch>
+                <Route path='/bossinfo' component={BossInfo}></Route>
+                <Route path='/geniusinfo' component={GeniusInfo}></Route>
+                <Route path='/login' component={Login}></Route>
+                <Route path='/register' component={Register}></Route>
+                <Route component={DashBoard}></Route>
+            </Switch>
+        </BrowserRouter>
     );
 }
 
