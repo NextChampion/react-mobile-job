@@ -9,7 +9,6 @@ export default class BossItem extends React.Component {
 
     render() {
         const { data } = this.props;
-        console.log('data', data);
         const { job, salary, compony, recruiter, tags } = data;
         const { name, position, icon } = recruiter;
         return (
