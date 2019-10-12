@@ -4,56 +4,56 @@ import BossItem from '../../components/bossitem';
 
 const data = [
     {
-        img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-        title: 'Meet hotel',
-        des: '不是所有的兼职汪都需要风吹日晒',
+        job: '前端开发工程师',
+        salary: '10-20k',
+        compony: 'alibaba',
+        recruiter: {
+            name: '张三',
+            position: '前端开发主管',
+            icon: 'http://image.biaobaiju.com/uploads/20180830/19/1535628120-pcjIeVWdbl.jpg',
+        },
+        tags: ['中关村', '3-5年', '本科'],
     },
     {
-        img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-        title: 'McDonald\'s invites you',
-        des: '不是所有的兼职汪都需要风吹日晒',
+        job: 'iOS开发工程师',
+        salary: '10-20k',
+        compony: 'alibaba',
+        recruiter: {
+            name: '李四',
+            position: '移动端开发主管',
+            icon: 'http://img.52z.com/upload/news/image/20180925/20180925053435_28892.jpg',
+        },
+        tags: ['中关村', '3-5年', '本科'],
     },
     {
-        img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-        title: 'Eat the week',
-        des: '不是所有的兼职汪都需要风吹日晒',
+        job: '前端开发工程师',
+        salary: '10-20k',
+        compony: 'alibaba',
+        recruiter: {
+            name: '张三',
+            position: '前端开发主管',
+            icon: 'http://tx.haiqq.com/uploads/allimg/170903/00195413M-9.jpg',
+        },
+        tags: ['中关村', '3-5年', '本科'],
+    },
+    {
+        job: '前端开发工程师',
+        salary: '10-20k',
+        compony: 'alibaba',
+        recruiter: {
+            name: '张三',
+            position: '前端开发主管',
+            icon: 'http://img0.imgtn.bdimg.com/it/u=2654066759,2185512125&fm=26&gp=0.jpg',
+        },
+        tags: ['中关村', '3-5年', '本科'],
     },
 ];
-const NUM_SECTIONS = 5;
-const NUM_ROWS_PER_SECTION = 5;
-let pageIndex = 0;
 
-const dataBlobs = {};
-let sectionIDs = [];
-let rowIDs = [];
-function genData(pIndex = 0) {
-    for (let i = 0; i < NUM_SECTIONS; i++) {
-        const ii = (pIndex * NUM_SECTIONS) + i;
-        const sectionName = `Section ${ii}`;
-        sectionIDs.push(sectionName);
-        dataBlobs[sectionName] = sectionName;
-        rowIDs[ii] = [];
-
-        for (let jj = 0; jj < NUM_ROWS_PER_SECTION; jj++) {
-            const rowName = `S${ii}, R${jj}`;
-            rowIDs[ii].push(rowName);
-            dataBlobs[rowName] = rowName;
-        }
-    }
-    sectionIDs = [...sectionIDs];
-    rowIDs = [...rowIDs];
-}
 export default class BossList extends React.Component {
     constructor(props) {
         super(props);
-        const getSectionData = (dataBlob, sectionID) => dataBlob[sectionID];
-        const getRowData = (dataBlob, sectionID, rowID) => dataBlob[rowID];
-
         const dataSource = new ListView.DataSource({
-            getRowData,
-            getSectionHeaderData: getSectionData,
             rowHasChanged: (row1, row2) => row1 !== row2,
-            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
         });
 
         this.state = {
@@ -64,17 +64,15 @@ export default class BossList extends React.Component {
     }
 
     componentDidMount() {
-        genData();
-
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlobs, sectionIDs, rowIDs),
+            dataSource: this.state.dataSource.cloneWithRows(data),
             isLoading: false,
         });
     }
 
-    renderRow = () => {
+    renderRow = (data) => {
         return (
-            <BossItem />
+            <BossItem data={data} />
         )
     }
 
