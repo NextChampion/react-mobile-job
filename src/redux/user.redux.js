@@ -4,12 +4,14 @@ import { getRedirectPath } from '../util';
 const ERROR_MESSAGE = 'ERROR_MESSAGE';
 const LOADED_USERINFO = 'LOADED_USERINFO';
 const AUTH_SUCCESS = 'AUTH_SUCCESS';
+const LOGOUT = 'LOGOUT'
 
 const initialState = {
     redirectTo: '',
     msg: '',
     user: '',
     type: '',
+    avator: '',
 }
 
 export function user(state = initialState, action) {
@@ -19,7 +21,9 @@ export function user(state = initialState, action) {
         case ERROR_MESSAGE:
             return { ...state, isAuth: false, msg: action.msg };
         case LOADED_USERINFO:
-                return { ...state, ...action.payload };
+            return { ...state, ...action.payload };
+        case LOGOUT:
+            return { ...initialState, redirectTo: '/login' };
         default:
             return state;
     }
@@ -37,7 +41,7 @@ export function loadedUserinfo(userinfo) {
     return { type: LOADED_USERINFO, payload: userinfo };
 }
 
-export function register({user, pwd, repeatPwd, type}) {
+export function register({ user, pwd, repeatPwd, type }) {
     if (!user || !pwd || !type) {
         return errorMsg('用户名或者密码不能为空');
     }
@@ -58,7 +62,7 @@ export function register({user, pwd, repeatPwd, type}) {
             }
             dispatch(authSuccess({ user, pwd, type }));
         })
-    } 
+    }
 }
 
 export function login({ user, pwd }) {
@@ -79,7 +83,7 @@ export function login({ user, pwd }) {
             }
             dispatch(authSuccess(resData))
         })
-    }    
+    }
 }
 
 export function update(data) {
@@ -97,5 +101,9 @@ export function update(data) {
             }
             dispatch(authSuccess(resData))
         })
-    }  
+    }
+}
+
+export function logoutSubmit(params) {
+    return { type: LOGOUT }
 }
