@@ -5,6 +5,7 @@ const Router = express.Router();
 const model = require('./model');
 
 const User = model.getModel('user');
+const Chat = model.getModel('chat');
 
 // 统一的一个过滤条件,不允许结果内显示用户密码和版本信息
 const _filter = { pwd: 0, __v: 0 };
@@ -18,6 +19,17 @@ Router.get('/list', (req, res) => {
             return res.json({ success: false, code: 1 })
         }
         return res.json({ success: true, code: 0, data: doc });
+    })
+})
+
+Router.get('./getmsglist', (req, res) => {
+    const { user } = req.cookies;
+    const a = { '$or': [{ from: user, to: user }] };
+    Chat.find(a, (err, doc) => {
+        if (err) {
+            return res.json({ code: 1, msgs: doc });
+        }
+        return res.json({ code: 0, msgs: doc });
     })
 })
 
@@ -56,14 +68,14 @@ Router.post('/login', (req, res) => {
     // 解析出来post过来的信息
     const { user, pwd } = req.body;
     // findOne 第一个参数是查找的条件, 第二个参数是将pwd设置为0  要求在返回的结果里不显示改字段信息,此处为隐藏用户密码信息
-    User.findOne({ user, pwd:md5Pwd(pwd) }, _filter, (err, doc) => {
+    User.findOne({ user, pwd: md5Pwd(pwd) }, _filter, (err, doc) => {
         if (err) {
             return res.json({ success: false, code: 1, message: err })
-        } 
+        }
         if (!doc) {
             return res.json({ success: false, code: 1, message: '用户名或密码错误' })
         }
-        res.cookie('userid', doc._id); 
+        res.cookie('userid', doc._id);
         return res.json({ success: true, code: 0, data: doc });
     })
 })
@@ -77,17 +89,17 @@ Router.post('/update', (req, res) => {
         return res.json({ success: false, code: 1, message: 'cookie数据不正确' });
     }
     const { body } = req;
-    console.log('updete body',userid, body);
+    console.log('updete body', userid, body);
     User.findByIdAndUpdate(userid, body, (err, doc) => {
-        console.log('updete doc',err, doc);
+        console.log('updete doc', err, doc);
         if (err) {
             return res.json({ success: false, code: 1, message: err })
-        } 
+        }
         if (!doc) {
             return res.json({ success: false, code: 1, message: '用户名或密码错误' })
         }
         // 合并一下数据,因为node不支持 ... 写法,此处使用Object.assign
-        const data =  Object.assign({}, {
+        const data = Object.assign({}, {
             user: doc.user,
             type: doc.type,
         }, body)
