@@ -22,7 +22,7 @@ Router.get('/list', (req, res) => {
     })
 })
 
-Router.get('./getmsglist', (req, res) => {
+Router.get('/getmsglist', (req, res) => {
     const { user } = req.cookies;
     const a = { '$or': [{ from: user, to: user }] };
     Chat.find(a, (err, doc) => {

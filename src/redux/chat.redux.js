@@ -2,7 +2,7 @@
  * @Author: zhangcunxia
  * @Email: zcx4150@gmail.com
  * @Date: 2020-06-21 23:08:54
- * @LastEditTime: 2020-06-21 23:29:55
+ * @LastEditTime: 2020-06-21 23:51:02
  * @LastEditors: zhangcunxia
  * @Description:
  */
@@ -25,9 +25,10 @@ export default function chat(state = initState, action) {
             const { payload } = action;
             return { ...state, chatmsg: payload, unread: payload.filter(v => !v.read).length }
         }
-        case MSG_RECV:
-
-            break;
+        case MSG_RECV: {
+            const { payload } = action;
+            return { ...state, chatmsg: [...state.chatmsg, payload], unread: state.unread + 1 }
+        }
         case MSG_READ:
 
             break;
@@ -41,20 +42,32 @@ function msgList(msgs) {
     return { type: MSG_LIST, payload: msgs }
 }
 
+function msgRecv(msg) {
+    return { type: MSG_RECV, payload: msg }
+}
+
 export function getMsgList() {
     return dispatch => {
         Axios.get('/user/getmsglist')
             .then(res => {
+                console.log('res=====', res);
                 if (res.state === 200 && res.data.code === 0) {
                     dispatch(msgList(res.data.msgs))
                 }
-            }
-            )
+            })
     }
 }
 
 export function sendMsg({ from, to, msg }) {
     return dispatch => {
         socket.emit('sendmsg', { from, to, msg })
+    }
+}
+
+export function recvMsg() {
+    return dispatch => {
+        socket.on('recvmsg', msg => {
+            dispatch(msgRecv(msg))
+        })
     }
 }

@@ -3,18 +3,18 @@ import './chat.css'
 import { List, InputItem } from 'antd-mobile';
 import io from 'socket.io-client'
 import { connect } from 'react-redux';
-import { getMsgList, sendMsg } from '../../redux/chat.redux';
-const socket = io('ws://localhost:9093');
+import { getMsgList, sendMsg, recvMsg } from '../../redux/chat.redux';
 
 @connect(
     state => state,
-    { getMsgList, sendMsg }
+    { getMsgList, sendMsg, recvMsg }
 )
 class Chat extends React.Component {
-    state = { text: '', msg: [] }
+    state = { text: '' }
     componentDidMount() {
-        const { getMsgList } = this.props;
+        const { getMsgList, recvMsg } = this.props;
         getMsgList();
+        recvMsg()
     }
 
     handleSubmit = () => {
@@ -28,12 +28,14 @@ class Chat extends React.Component {
         this.setState({ text: '' })
     }
     render() {
-        const { match } = this.props;
-        const { text, msg } = this.state;
+        const { text } = this.state;
+        const { chat } = this.props;
+        const { chatmsg } = chat;
         return (
             <div>
-                {msg.map(item => {
-                    return <p key={item.text}>{item.text}</p>
+                {chatmsg.map(item => {
+                    const { _id, content } = item;
+                    return <p key={_id}>{content}</p>
                 })}
                 <div className='stick-footer'>
                     <List>
