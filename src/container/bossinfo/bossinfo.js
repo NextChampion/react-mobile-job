@@ -24,9 +24,9 @@ class BossInfo extends React.Component {
             [key]: val,
         })
     }
-    
+
     onAvatarSelected = (image) => {
-        this.setState({avatar: image})
+        this.setState({ avatar: image })
     }
 
     onSaveButtonClick = () => {
@@ -35,7 +35,7 @@ class BossInfo extends React.Component {
             update(this.state);
         }
     }
-     
+
     render() {
         const path = this.props.location.pathname;
         const { redirectTo } = this.props;
@@ -45,26 +45,18 @@ class BossInfo extends React.Component {
                 <NavBar mode="dark">
                     BOSS完善信息页面
                 </NavBar>
-                <AvatarSelector 
-                    selectAvatar={this.onAvatarSelected}
-                >
-                </AvatarSelector>
+                <WingBlank>
+                    <AvatarSelector selectAvatar={this.onAvatarSelected}></AvatarSelector>
+                </WingBlank>
                 <WingBlank>
                     <List>
-                       
-                        <InputItem 
-                            onChange={val => this.handleChange('title', val)}
-                        >
+                        <InputItem onChange={val => this.handleChange('title', val)}>
                             招聘职位
                         </InputItem>
-                        <InputItem 
-                            onChange={val => this.handleChange('company', val)}
-                        >
+                        <InputItem onChange={val => this.handleChange('company', val)}>
                             公司名称
                         </InputItem>
-                        <InputItem
-                            onChange={val => this.handleChange('money', val)}
-                        >
+                        <InputItem onChange={val => this.handleChange('money', val)}>
                             职位薪资
                         </InputItem>
                         <TextareaItem
@@ -75,12 +67,7 @@ class BossInfo extends React.Component {
                         />
                     </List>
                 </WingBlank>
-                <Button 
-                    type='primary'
-                    onClick={this.onSaveButtonClick}
-                >
-                    保存
-                </Button>
+                <Button type='primary' onClick={this.onSaveButtonClick}>保存</Button>
             </div>
         )
     }

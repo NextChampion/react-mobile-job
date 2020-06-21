@@ -9,7 +9,7 @@ class Me extends React.Component {
     logout = () => {
         browserCookies.erase('userid');
     }
-     
+
     render() {
         const { user, type, company, title, desc, money } = this.props;
         if (!user) {
@@ -22,11 +22,11 @@ class Me extends React.Component {
                     title={user}
                     message={type === 'boss' ? company : null}
                 />
-                <List renderHeader={()=>'简介'}>
+                <List renderHeader={() => '简介'}>
                     <List.Item multipleLine>
                         {title}
-                        <List.Item.Brief>{desc.split('\n').map(v => <div key={v}>{v}</div>)}</List.Item.Brief>
-                        {money ? <List.Item.Brief>{money}</List.Item.Brief>:null}
+                        <List.Item.Brief>{desc && desc.split('\n').map(v => <div key={v}>{v}</div>)}</List.Item.Brief>
+                        {money ? <List.Item.Brief>{money}</List.Item.Brief> : null}
                     </List.Item>
                 </List>
                 <WhiteSpace></WhiteSpace>
@@ -37,7 +37,7 @@ class Me extends React.Component {
                 </List>
             </div>
 
-            
+
         )
     }
 }

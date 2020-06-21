@@ -43,10 +43,10 @@ class AuthRoute extends React.Component {
 
         // 用户是否完善用户信息 (选择头像 个人简介)
     }
+
+
     render() {
-        return (
-            <div>auth</div>
-        )
+        return null
     }
 }
 

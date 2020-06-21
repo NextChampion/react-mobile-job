@@ -30,7 +30,7 @@ class AvatarSelector extends React.Component {
         }
         this.setState(image)
     }
-     
+
     render() {
         const avatarList = [
             'h00001.png',
@@ -53,12 +53,12 @@ class AvatarSelector extends React.Component {
                 <span>已选择头像</span>
                 <img style={{ width: 20, height: 20 }} src={icon} alt="" />
             </div>
-        ) : <div>请选择头像</div>; 
+        ) : <div>请选择头像</div>;
         return (
             <div>
-                <List renderHeader={()=>gridHeader}>
-                    <Grid 
-                        data={avatarList} 
+                <List renderHeader={() => gridHeader}>
+                    <Grid
+                        data={avatarList}
                         columnNum={5}
                         onClick={this.onGridItemClick}
                     />
