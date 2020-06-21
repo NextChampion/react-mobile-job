@@ -13,20 +13,19 @@ export function chatuser(state = initialState, action) {
         default:
             return state;
     }
-} 
+}
 
 function userList(data) {
-    return { type: USER_LIST, payload: data}
+    return { type: USER_LIST, payload: data }
 }
 
 export function getUserList(type) {
     return dispatch => {
         Axios.get('/user/list?type=' + type)
-        .then(res => {
-            console.log('getUserList',res);
-            if (res.data.code === 0) {
-                dispatch(userList(res.data.data));
-            }
-        })
+            .then(res => {
+                if (res.data.code === 0) {
+                    dispatch(userList(res.data.data));
+                }
+            })
     }
 }

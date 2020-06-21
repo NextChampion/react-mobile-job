@@ -1,17 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Result, List, WhiteSpace } from 'antd-mobile';
+import { Result, List, WhiteSpace, Button } from 'antd-mobile';
 import browserCookies from 'browser-cookies';
 @connect(
     ({ user }) => user
 )
 class Me extends React.Component {
     logout = () => {
+        console.log('logout');
+
         browserCookies.erase('userid');
     }
 
     render() {
         const { user, type, company, title, desc, money } = this.props;
+        console.log('uerrrr', this.props);
+
         if (!user) {
             return null;
         }
@@ -31,9 +35,9 @@ class Me extends React.Component {
                 </List>
                 <WhiteSpace></WhiteSpace>
                 <List>
-                    <List.Item onClick={this.logout}>
+                    <Button onClick={this.logout}>
                         退出登录
-                    </List.Item>
+                    </Button>
                 </List>
             </div>
 

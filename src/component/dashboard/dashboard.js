@@ -54,7 +54,6 @@ class DashBoard extends React.Component {
                 text: '个人中心',
             }
         ]
-        console.log('navList', navList);
         const navInfo = navList.find(v => v.path === pathname);
         return (
             <div>
@@ -67,7 +66,6 @@ class DashBoard extends React.Component {
                     </Switch>
                 </div>
                 <NavLinkBar data={navList}></NavLinkBar>
-                
             </div>
         )
     }

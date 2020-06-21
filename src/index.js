@@ -13,13 +13,15 @@ import GenuisInfo from './container/genuisinfo/genuisinfo';
 import DashBoard from './component/dashboard/dashboard';
 import AuthRoute from './component/authroute/authroute';
 import Chat from './component/chat/chat';
+import logger from 'redux-logger'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, composeEnhancers(
-    applyMiddleware(thunk),
+    applyMiddleware(thunk, logger),
+
 ));
 
-console.log(store.getState()); 
+console.log(store.getState());
 
 
 ReactDOM.render(
