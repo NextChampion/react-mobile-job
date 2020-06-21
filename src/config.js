@@ -2,7 +2,7 @@
  * @Author: zhangcunxia
  * @Email: zcx4150@gmail.com
  * @Date: 2020-06-21 13:04:08
- * @LastEditTime: 2020-06-21 13:10:12
+ * @LastEditTime: 2020-06-21 14:27:53
  * @LastEditors: zhangcunxia
  * @Description: 
  */ 
@@ -15,8 +15,6 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(config=> {
-    setTimeout(()=>{
-        Toast.hide();
-    }, 2000);
+    Toast.hide();
     return config;
 })
