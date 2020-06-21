@@ -5,56 +5,47 @@ import { Redirect } from 'react-router-dom';
 
 import { login } from '../../redux/user.redux';
 import Logo from '../../component/logo/logo';
+import JobForm from '../../component/job-form';
 @connect(
     ({ user }) => user,
     { login }
 )
+@JobForm
 class Login extends React.Component {
-    state = {
-        user: '',
-        pwd: '',
-    }
-
-    handleChange = (key, val) => {
-        this.setState({
-            [key]: val,
-        })
-    }
 
     register = () => {
         this.props.history.push('./register')
     }
 
     onLoginClick = () => {
-        const { login } = this.props;
-        login(this.state);
+        const { login, state } = this.props;
+        login(state);
     }
-     
-    render() {
-        const { msg, redirectTo } = this.props;
 
+    render() {
+        const { msg, redirectTo, handleChange } = this.props;
         return (
             <div>
-                {redirectTo ? <Redirect to={redirectTo} /> : null}
+                {redirectTo && redirectTo !== '/login' ? <Redirect to={redirectTo} /> : null}
                 <Logo></Logo>
                 <WingBlank>
                     <List>
                         {msg ? <p className="error-msg">{msg}</p> : null}
-                        <InputItem 
-                            onChange={val => this.handleChange('user', val)}
+                        <InputItem
+                            onChange={val => handleChange('user', val)}
                         >
                             用户
                         </InputItem>
                         <InputItem
                             type="password"
-                            onChange={val => this.handleChange('pwd', val)}
+                            onChange={val => handleChange('pwd', val)}
                         >
                             密码
                         </InputItem>
                     </List>
-                    <WhiteSpace/>
+                    <WhiteSpace />
                     <Button onClick={this.onLoginClick} type="primary">登录</Button>
-                    <WhiteSpace/>
+                    <WhiteSpace />
                     <Button onClick={this.register} type="primary">注册</Button>
                 </WingBlank>
             </div>
