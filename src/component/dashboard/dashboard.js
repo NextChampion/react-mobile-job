@@ -9,12 +9,22 @@ import Message from '../../container/message/message';
 import Me from '../me/me';
 import Genuis from '../genuis/genuis';
 import NavLinkBar from '../navlink/navlink';
+import { getMsgList, recvMsg } from '../../redux/chat.redux';
+
+
 @connect(
     (state) => state,
+    { getMsgList, recvMsg }
 )
 class DashBoard extends React.Component {
     state = {
         selectedTab: 'one',
+    }
+
+    componentDidMount() {
+        const { getMsgList, recvMsg } = this.props;
+        getMsgList();
+        recvMsg()
     }
 
     render() {

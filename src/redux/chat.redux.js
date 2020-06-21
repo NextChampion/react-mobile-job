@@ -2,7 +2,7 @@
  * @Author: zhangcunxia
  * @Email: zcx4150@gmail.com
  * @Date: 2020-06-21 23:08:54
- * @LastEditTime: 2020-06-21 23:51:02
+ * @LastEditTime: 2020-06-22 00:07:10
  * @LastEditors: zhangcunxia
  * @Description:
  */
@@ -50,8 +50,8 @@ export function getMsgList() {
     return dispatch => {
         Axios.get('/user/getmsglist')
             .then(res => {
-                console.log('res=====', res);
-                if (res.state === 200 && res.data.code === 0) {
+                console.log('res=====', res.data.msgs.length);
+                if (res.status === 200 && res.data.code === 0) {
                     dispatch(msgList(res.data.msgs))
                 }
             })

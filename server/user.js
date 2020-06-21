@@ -9,7 +9,9 @@ const Chat = model.getModel('chat');
 
 // 统一的一个过滤条件,不允许结果内显示用户密码和版本信息
 const _filter = { pwd: 0, __v: 0 };
+// Chat.remove({}, (err, doc) => {
 
+// })
 // 查询所有用户列表
 Router.get('/list', (req, res) => {
     // User.remove({},()=>{});
@@ -25,7 +27,7 @@ Router.get('/list', (req, res) => {
 Router.get('/getmsglist', (req, res) => {
     const { user } = req.cookies;
     const a = { '$or': [{ from: user, to: user }] };
-    Chat.find(a, (err, doc) => {
+    Chat.find({}, (err, doc) => {
         if (err) {
             return res.json({ code: 1, msgs: doc });
         }

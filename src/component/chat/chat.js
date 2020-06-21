@@ -1,7 +1,6 @@
 import React from 'react';
 import './chat.css'
-import { List, InputItem } from 'antd-mobile';
-import io from 'socket.io-client'
+import { List, InputItem, NavBar } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { getMsgList, sendMsg, recvMsg } from '../../redux/chat.redux';
 
@@ -12,14 +11,11 @@ import { getMsgList, sendMsg, recvMsg } from '../../redux/chat.redux';
 class Chat extends React.Component {
     state = { text: '' }
     componentDidMount() {
-        const { getMsgList, recvMsg } = this.props;
-        getMsgList();
-        recvMsg()
     }
 
     handleSubmit = () => {
         const { text } = this.state;
-        const { user, match, sendMsg } = this.props;
+        const { user, match, sendMsg, List } = this.props;
         const { _id } = user;
         const from = _id;
         const to = match.params.user;
@@ -29,14 +25,22 @@ class Chat extends React.Component {
     }
     render() {
         const { text } = this.state;
-        const { chat } = this.props;
+        const { chat, match } = this.props;
         const { chatmsg } = chat;
+        const { user } = match.params
         return (
-            <div>
-                {chatmsg.map(item => {
-                    const { _id, content } = item;
-                    return <p key={_id}>{content}</p>
-                })}
+            <div id='chat-page'>
+                <NavBar mode='dark'>{user}</NavBar>
+                <List>
+                    {chatmsg.map(item => {
+                        const { _id, content, from } = item;
+                        return from === user ? (
+                            <List.Item key={_id} >对方发来的:{content}</List.Item>
+                        ) : (
+                                <List.Item className='chat-me' key={_id} extra={'我的'} >我发的:{content}</List.Item>
+                            )
+                    })}
+                </List>
                 <div className='stick-footer'>
                     <List>
                         <InputItem

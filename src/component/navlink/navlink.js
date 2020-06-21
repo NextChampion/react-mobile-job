@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TabBar } from 'antd-mobile';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 @withRouter
+@connect(state => state.chat)
 class NavLinkBar extends React.Component {
     static propTypes = {
         data: PropTypes.array.isRequired,
@@ -17,7 +19,9 @@ class NavLinkBar extends React.Component {
     }
 
     render() {
-        const { data, location, history } = this.props;
+        const { data, location, history, unread } = this.props;
+        console.log('chat', this.props);
+
         const { pathname } = location
         const navList = data.filter(v => !v.hide);
         return (
@@ -32,7 +36,7 @@ class NavLinkBar extends React.Component {
                     icon={{ uri: require(`../images/tabbar/${v.icon}.png`) }}
                     selectedIcon={{ uri: require(`../images/tabbar/${v.icon}_pressed.png`) }}
                     selected={pathname === v.path}
-                    badge={1}
+                    badge={v.path === '/message' ? unread : 0}
                     onPress={() => {
                         history.push(v.path)
                     }}
