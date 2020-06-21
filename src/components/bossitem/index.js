@@ -23,7 +23,7 @@ export default class BossItem extends React.Component {
                         <div>{compony}</div>
                         <div >{tags.map(t => (<Button className="tag" key={t}>   {t}    </Button>))}</div>
                     </Card.Body>
-                    <Card.Footer content={<div><img alt='头像' src={icon} width={20} /> {name} · {position}</div>}  />
+                    <Card.Footer content={<div><img alt='头像' src={icon} width={20} /> {name} · {position}</div>} />
                 </Card>
                 <WhiteSpace size="lg" />
             </WingBlank>

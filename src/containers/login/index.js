@@ -10,7 +10,7 @@ export default class Login extends React.Component {
         const { history } = this.props;
         history.push('/register');
     }
-    
+
     render() {
         return (
             <div>

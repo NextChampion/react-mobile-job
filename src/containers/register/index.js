@@ -7,7 +7,6 @@ const { RadioItem } = Radio;
 export default class Register extends React.Component {
     state = {
         type: 'genius', // 求职者
-
     }
 
     register = () => {
@@ -26,8 +25,8 @@ export default class Register extends React.Component {
                         <InputItem>密码</InputItem>
                         <InputItem>确认密码</InputItem>
                         <WhiteSpace></WhiteSpace>
-                        <RadioItem checked={type ==='genius'}>牛人</RadioItem>
-                        <RadioItem checked={type ==='boss'}>老板</RadioItem>
+                        <RadioItem checked={type === 'genius'}>牛人</RadioItem>
+                        <RadioItem checked={type === 'boss'}>老板</RadioItem>
                     </List>
                     <WhiteSpace></WhiteSpace>
                     <Button type='primary' onClick={this.register}>注册</Button>

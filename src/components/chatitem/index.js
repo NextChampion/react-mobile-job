@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, WingBlank, WhiteSpace, List, } from 'antd-mobile';
+import { Card, WingBlank, WhiteSpace, List } from 'antd-mobile';
 import './index.css';
 const { Item } = List;
 
@@ -27,12 +27,12 @@ export default class ChatItem extends React.Component {
                     <Card.Header
                         title={name}
                         thumb={icon}
-                        thumbStyle={{width: 40}}
+                        thumbStyle={{ width: 40 }}
                         extra={<div> {compony} · {position}</div>}
                     />
                     <Card.Footer content={lastMsg} extra={<div>{lastMsgTs}</div>} />
                 </Card>
-                <WhiteSpace  />
+                <WhiteSpace />
             </WingBlank>
         )
     }

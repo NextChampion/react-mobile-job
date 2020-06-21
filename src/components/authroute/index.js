@@ -2,10 +2,10 @@
  * @Author: zhangcunxia
  * @Email: zcx4150@gmail.com
  * @Date: 2020-06-21 15:00:27
- * @LastEditTime: 2020-06-21 15:18:41
+ * @LastEditTime: 2020-06-21 16:16:22
  * @LastEditors: zhangcunxia
  * @Description: 
- */ 
+ */
 import React, { PureComponent } from 'react'
 import { withRouter } from 'react-router-dom';
 
@@ -16,11 +16,10 @@ export default class AuthRoute extends PureComponent {
         this.getUserInfo();
     }
 
-    getUserInfo = async() => {
-        
+    getUserInfo = async () => {
         // 获取用户信息
         const result = await axios.get('./user/info');
-        console.log('result',result);
+        console.log('result', result);
         const { status, data } = result;
         if (status !== 200) {
             return;
@@ -33,6 +32,7 @@ export default class AuthRoute extends PureComponent {
 
         // 用户是否完善信息(头像和个人简介)
     }
+
     render() {
         return null
     }
