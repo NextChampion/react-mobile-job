@@ -1,11 +1,5 @@
-/*
- * @Author: zhangcunxia
- * @Email: zcx4150@gmail.com
- * @Date: 2020-06-21 13:10:40
- * @LastEditTime: 2020-06-21 13:11:40
- * @LastEditors: zhangcunxia
- * @Description: 
- */ 
 import { combineReducers } from 'redux';
+import { user } from './redux/user.redux';
+import { chatuser } from './redux/chatuser.redux';
 
-export default combineReducers({});
+export default combineReducers({ user, chatuser });
