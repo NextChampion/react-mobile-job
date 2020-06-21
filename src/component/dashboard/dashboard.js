@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavBar } from 'antd-mobile';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, } from 'react-router-dom';
 
 import '../../index.css';
 import Boss from '../boss/boss';
@@ -9,7 +9,6 @@ import Message from '../../container/message/message';
 import Me from '../me/me';
 import Genuis from '../genuis/genuis';
 import NavLinkBar from '../navlink/navlink';
-
 @connect(
     (state) => state,
 )
@@ -56,7 +55,8 @@ class DashBoard extends React.Component {
         ]
         const navInfo = navList.find(v => v.path === pathname);
         return (
-            <div>
+            <div style={{ backgroundColor: 'green' }}>
+                <NavLinkBar style={{ zIndex: -1 }} data={navList}></NavLinkBar>
                 <NavBar className="fixed-header" mode="dark">{navInfo && navInfo.title}</NavBar>
                 <div style={{ marginTop: 45 }}>
                     <Switch>
@@ -65,7 +65,6 @@ class DashBoard extends React.Component {
                         ))}
                     </Switch>
                 </div>
-                <NavLinkBar data={navList}></NavLinkBar>
             </div>
         )
     }

@@ -4,8 +4,6 @@ const REMOVE_GUN = '减机关枪';
 // reducer 
 // 根据就得state和传递过来的action 生成新的state
 export function counter(state = 10, action) {
-    console.log('counter',action);
-    
     switch (action.type) {
         case ADD_GUN:
             return state + 1;

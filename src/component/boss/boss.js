@@ -21,7 +21,7 @@ class Boss extends React.Component {
     render() {
         const { data } = this.state;
         return (
-            <UserCard userlist={data}/>
+            <UserCard userlist={data} />
         )
     }
 }
