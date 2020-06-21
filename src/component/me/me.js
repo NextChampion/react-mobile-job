@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Result, List, WhiteSpace, Button } from 'antd-mobile';
+import { Result, List, WhiteSpace, Button, Modal } from 'antd-mobile';
 import browserCookies from 'browser-cookies';
 const { Item } = List;
 @connect(
@@ -8,7 +8,15 @@ const { Item } = List;
 )
 class Me extends React.Component {
     logout = () => {
-        browserCookies.erase('userid');
+        const { alert } = Modal;
+        alert('注销', '确认退出吗?', [
+            { text: '取消', onPress: () => { } },
+            {
+                text: '确认', onPress: () => {
+                    browserCookies.erase('userid');
+                }
+            },
+        ])
     }
 
     render() {
@@ -17,7 +25,7 @@ class Me extends React.Component {
             return null;
         }
         return (
-            <div style={{ backgroundColor: 'red' }}>
+            <div>
                 <Button onClick={this.logout}>退出登录</Button>
                 <Result
                     img={<img style={{ width: 50, height: 50 }} src={require('../images/h00001.png')} alt="" />}

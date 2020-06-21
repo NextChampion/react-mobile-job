@@ -14,7 +14,7 @@ class UserCard extends React.Component {
     render() {
         const { userlist } = this.props;
         return (
-            <div style={{ backgroundColor: 'red' }}>
+            <div>
                 <WingBlank>
                     {userlist.map(v => (
                         <Card

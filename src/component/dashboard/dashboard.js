@@ -55,8 +55,8 @@ class DashBoard extends React.Component {
         ]
         const navInfo = navList.find(v => v.path === pathname);
         return (
-            <div style={{ backgroundColor: 'green' }}>
-                <NavLinkBar style={{ zIndex: -1 }} data={navList}></NavLinkBar>
+            <div>
+                <NavLinkBar data={navList}></NavLinkBar>
                 <NavBar className="fixed-header" mode="dark">{navInfo && navInfo.title}</NavBar>
                 <div style={{ marginTop: 45 }}>
                     <Switch>
