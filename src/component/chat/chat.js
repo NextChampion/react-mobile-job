@@ -34,14 +34,20 @@ class Chat extends React.Component {
         const { text } = this.state;
         const { chat, match } = this.props;
         const { chatmsg } = chat;
-        const { user } = match.params
+        const { user: userid } = match.params
+        const { users } = chat;
+        if (!users || !users[userid]) {
+            // return null;
+        }
+        const userInfo = users[userid] || {};
+        const { name } = userInfo || {};
         return (
             <div id='chat-page'>
-                <NavBar mode='dark'>{user}</NavBar>
+                <NavBar mode='dark'>{name}</NavBar>
                 <List>
                     {chatmsg.map(item => {
                         const { _id, content, from } = item;
-                        return from === user ? (
+                        return from === userid ? (
                             <List.Item key={_id} >对方发来的:{content}</List.Item>
                         ) : (
                                 <List.Item className='chat-me' key={_id} extra={'我的'} >我发的:{content}</List.Item>
