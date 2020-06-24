@@ -3,6 +3,7 @@ import './chat.css'
 import { List, InputItem, NavBar, Icon } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { getMsgList, sendMsg, recvMsg } from '../../redux/chat.redux';
+import { getChatId } from '../../util';
 
 @connect(
     state => state,
@@ -12,8 +13,8 @@ class Chat extends React.Component {
     state = { text: '' }
     componentDidMount() {
         const { chat, getMsgList,recvMsg } = this.props;
-        const { msgs } = chat || {}
-        if (!msgs ||!chat.msgs.length) {
+        const { chatmsg } = chat || {}
+        if (!chatmsg ||!chatmsg.length) {
             getMsgList();
             recvMsg()
         }
@@ -22,7 +23,7 @@ class Chat extends React.Component {
 
     handleSubmit = () => {
         const { text } = this.state;
-        const { user, match, sendMsg, List } = this.props;
+        const { user, match, sendMsg } = this.props;
         const { _id } = user;
         const from = _id;
         const to = match.params.user;
@@ -38,7 +39,7 @@ class Chat extends React.Component {
 
     render() {
         const { text } = this.state;
-        const { chat, match } = this.props;
+        const { chat, match, user } = this.props;
         const { chatmsg } = chat;
         const { user: userid } = match.params
         const { users } = chat;
@@ -47,6 +48,8 @@ class Chat extends React.Component {
         }
         const userInfo = users[userid] || {};
         const { name } = userInfo || {};
+        const chatId = getChatId(userid, user._id);
+        const currentMsg = chatmsg.filter(v => v.chatid ===chatId)
         return (
             <div id='chat-page'>
                 <NavBar
@@ -57,7 +60,7 @@ class Chat extends React.Component {
                     {name}
                 </NavBar>
                 <List>
-                    {chatmsg.map(item => {
+                    {currentMsg.map(item => {
                         const { _id, content, from } = item;
                         const fromInfo = users[from] || {};
                         const { avatar } = fromInfo || {};

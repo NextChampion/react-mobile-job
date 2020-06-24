@@ -22,9 +22,12 @@ class DashBoard extends React.Component {
     }
 
     componentDidMount() {
-        const { getMsgList, recvMsg } = this.props;
-        getMsgList();
-        recvMsg()
+        const { getMsgList, recvMsg, chat } = this.props;
+        const { chatmsg } = chat || {};
+        if (!chatmsg || !chatmsg.length) {
+            getMsgList();
+            recvMsg()
+        }
     }
 
     render() {
