@@ -1,6 +1,6 @@
 import React from 'react';
 import './chat.css'
-import { List, InputItem, NavBar, Icon } from 'antd-mobile';
+import { List, InputItem, NavBar, Icon, Grid} from 'antd-mobile';
 import { connect } from 'react-redux';
 import { getMsgList, sendMsg, recvMsg } from '../../redux/chat.redux';
 import { getChatId } from '../../util';
@@ -10,7 +10,7 @@ import { getChatId } from '../../util';
     { getMsgList, sendMsg, recvMsg }
 )
 class Chat extends React.Component {
-    state = { text: '' }
+    state = { text: '' , showEmoji: false}
     componentDidMount() {
         const { chat, getMsgList,recvMsg } = this.props;
         const { chatmsg } = chat || {}
@@ -18,7 +18,6 @@ class Chat extends React.Component {
             getMsgList();
             recvMsg()
         }
-        
     }
 
     handleSubmit = () => {
@@ -37,8 +36,25 @@ class Chat extends React.Component {
         history.goBack();
     }
 
-    render() {
+    fixCarousel = () => {
+        setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));   
+        });
+    }
+
+    onEmojiClick = () => {
+        const { showEmoji } = this.state;
+        this.setState({ showEmoji: !showEmoji })
+            this.fixCarousel();
+    }
+
+    onGridClick = (el) => {
         const { text } = this.state;
+        this.setState({text: text+el.text})
+
+    }
+    render() {
+        const { text, showEmoji } = this.state;
         const { chat, match, user } = this.props;
         const { chatmsg } = chat;
         const { user: userid } = match.params
@@ -49,8 +65,9 @@ class Chat extends React.Component {
         const userInfo = users[userid] || {};
         const { name } = userInfo || {};
         const chatId = getChatId(userid, user._id);
-        const currentMsg = chatmsg.filter(v => v.chatid ===chatId)
-        return (
+        const currentMsg = chatmsg.filter(v => v.chatid === chatId)
+        const emoji = '😀 😁 😂 😃 😄 😅 😆 😉 😊 😋 😎 😍 😘 😗 😙 😚 😇 😐 😑 😶 😏 😣 😥 😮 😯 😪 😫 😴 😌 😛 😜 😝 😒 😓 😔 😕 😲 😷 😖 😞 😟 😤 😢 😭 😦 😧 😨 😬 😰 😱 😳 😵 😡 😠'.split(' ').filter(v=>v).map(v => ({text:v}));
+        return ( 
             <div id='chat-page'>
                 <NavBar
                     mode='dark'
@@ -78,7 +95,7 @@ class Chat extends React.Component {
                                     key={_id}
                                     extra={<img src={avatarIcon} alt='' />}
                                 >
-                                    我发的:{content}
+                                    {content}
                                 </List.Item>
                             )
                     })}
@@ -91,11 +108,23 @@ class Chat extends React.Component {
                             onChange={v => {
                                 this.setState({ text: v })
                             }}
-                            extra={<span onClick={this.handleSubmit}>发送</span>}
+                            extra={
+                                <div>
+                                    <span role="img" aria-label="Snowman" style={{ marginRight: 15 }} onClick={this.onEmojiClick}>😀</span>
+                                    <span onClick={this.handleSubmit}>发送</span>
+                                </div>
+                            }
                         >
                             信息
                         </InputItem>
                     </List>
+                    {showEmoji ? <Grid
+                        data={emoji}
+                        columnNum={9}
+                        carouselMaxRow={4}
+                        isCarousel
+                        onClick={this.onGridClick}
+                    ></Grid> : null}
                 </div>
             </div>
         )
