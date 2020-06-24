@@ -2,7 +2,7 @@
  * @Author: zhangcunxia
  * @Email: zcx4150@gmail.com
  * @Date: 2020-06-21 23:08:54
- * @LastEditTime: 2020-06-23 22:41:20
+ * @LastEditTime: 2020-06-24 23:13:30
  * @LastEditors: zhangcunxia
  * @Description:
  */
@@ -28,12 +28,13 @@ export default function chat(state = initState, action) {
                 ...state,
                 chatmsg: payload.msgs,
                 users: payload.users,
-                unread: payload.msgs.filter(v => !v.read).length,
+                unread: payload.msgs.filter(v => !v.read && v.to ===payload.userid).length,
             }
         }
         case MSG_RECV: {
             const { payload } = action;
-            return { ...state, chatmsg: [...state.chatmsg, payload], unread: state.unread + 1 }
+            const n = payload.msg.to === payload.userid ? 1 : 0;
+            return { ...state, chatmsg: [...state.chatmsg, payload.msg], unread: state.unread + n }
         }
         case MSG_READ:
 
@@ -44,21 +45,23 @@ export default function chat(state = initState, action) {
     }
 }
 
-function msgList(msgs, users) {
-    return { type: MSG_LIST, payload: {msgs, users} }
+function msgList(msgs, users, userid) {
+    return { type: MSG_LIST, payload: {msgs, users, userid} }
 }
 
-function msgRecv(msg) {
-    return { type: MSG_RECV, payload: msg }
+function msgRecv(msg, userid) {
+    return { type: MSG_RECV, payload: {msg, userid} }
 }
 
 export function getMsgList() {
-    return dispatch => {
+    return (dispatch, getState) => {
         Axios.get('/user/getmsglist')
             .then(res => {
-                console.log('res=====', res.data.msgs.length);
                 if (res.status === 200 && res.data.code === 0) {
-                    dispatch(msgList(res.data.msgs, res.data.users))
+                    console.log('ssss', getState());
+                    const { user } = getState() || {};
+                    const userid = user._id;
+                    dispatch(msgList(res.data.msgs, res.data.users, userid))
                 }
             })
     }
@@ -71,9 +74,11 @@ export function sendMsg({ from, to, msg }) {
 }
 
 export function recvMsg() {
-    return dispatch => {
+    return (dispatch, getState) => {
         socket.on('recvmsg', msg => {
-            dispatch(msgRecv(msg))
+            const { user } = getState() || {};
+            const userid = user._id;
+            dispatch(msgRecv(msg, userid))
         })
     }
 }
