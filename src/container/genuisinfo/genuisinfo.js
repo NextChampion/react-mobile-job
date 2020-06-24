@@ -24,6 +24,8 @@ class GenuisInfo extends React.Component {
     }
     
     onAvatarSelected = (image) => {
+        console.log('niuren onAvatarSelected', image);
+        
         this.setState({avatar: image})
     }
 

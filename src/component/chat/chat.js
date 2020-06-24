@@ -11,6 +11,13 @@ import { getMsgList, sendMsg, recvMsg } from '../../redux/chat.redux';
 class Chat extends React.Component {
     state = { text: '' }
     componentDidMount() {
+        const { chat, getMsgList,recvMsg } = this.props;
+        const { msgs } = chat || {}
+        if (!msgs ||!chat.msgs.length) {
+            getMsgList();
+            recvMsg()
+        }
+        
     }
 
     handleSubmit = () => {

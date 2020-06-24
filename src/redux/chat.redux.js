@@ -2,7 +2,7 @@
  * @Author: zhangcunxia
  * @Email: zcx4150@gmail.com
  * @Date: 2020-06-21 23:08:54
- * @LastEditTime: 2020-06-22 00:07:10
+ * @LastEditTime: 2020-06-23 22:41:20
  * @LastEditors: zhangcunxia
  * @Description:
  */
@@ -16,6 +16,7 @@ const MSG_READ = 'MSG_READ'; // 标记已读
 
 const initState = {
     chatmsg: [],
+    users: {},
     unread: 0,
 }
 
@@ -23,7 +24,12 @@ export default function chat(state = initState, action) {
     switch (action.type) {
         case MSG_LIST: {
             const { payload } = action;
-            return { ...state, chatmsg: payload, unread: payload.filter(v => !v.read).length }
+            return {
+                ...state,
+                chatmsg: payload.msgs,
+                users: payload.users,
+                unread: payload.msgs.filter(v => !v.read).length,
+            }
         }
         case MSG_RECV: {
             const { payload } = action;
@@ -38,8 +44,8 @@ export default function chat(state = initState, action) {
     }
 }
 
-function msgList(msgs) {
-    return { type: MSG_LIST, payload: msgs }
+function msgList(msgs, users) {
+    return { type: MSG_LIST, payload: {msgs, users} }
 }
 
 function msgRecv(msg) {
@@ -52,7 +58,7 @@ export function getMsgList() {
             .then(res => {
                 console.log('res=====', res.data.msgs.length);
                 if (res.status === 200 && res.data.code === 0) {
-                    dispatch(msgList(res.data.msgs))
+                    dispatch(msgList(res.data.msgs, res.data.users))
                 }
             })
     }

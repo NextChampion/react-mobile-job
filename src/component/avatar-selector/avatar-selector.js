@@ -25,6 +25,9 @@ class AvatarSelector extends React.Component {
 
     onGridItemClick = (image) => {
         const { selectAvatar } = this.props;
+        console.log('selectAvatar', image);
+        console.log('selectAvatar', selectAvatar);
+        
         if (selectAvatar) {
             selectAvatar(image.text);
         }

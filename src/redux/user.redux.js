@@ -11,7 +11,7 @@ const initialState = {
     msg: '',
     user: '',
     type: '',
-    avator: '',
+    avatar: '',
 }
 
 export function user(state = initialState, action) {
@@ -87,6 +87,7 @@ export function login({ user, pwd }) {
 }
 
 export function update(data) {
+    console.log('update', data);
     return dispatch => {
         axios.post('/user/update', data).then(res => {
             if (res.status !== 200) {

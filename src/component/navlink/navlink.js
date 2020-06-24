@@ -20,8 +20,6 @@ class NavLinkBar extends React.Component {
 
     render() {
         const { data, location, history, unread } = this.props;
-        console.log('chat', this.props);
-
         const { pathname } = location
         const navList = data.filter(v => !v.hide);
         return (

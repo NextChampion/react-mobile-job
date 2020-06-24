@@ -26,11 +26,14 @@ class BossInfo extends React.Component {
     }
 
     onAvatarSelected = (image) => {
+        console.log('onAvatarSelected', image);
+        
         this.setState({ avatar: image })
     }
 
     onSaveButtonClick = () => {
         const { update } = this.props;
+        console.log('state', this.state);
         if (update) {
             update(this.state);
         }

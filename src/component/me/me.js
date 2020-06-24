@@ -25,7 +25,9 @@ class Me extends React.Component {
     }
 
     render() {
-        const { user, type, company, title, desc, money, redirectTo } = this.props;
+        const { user, type, company, title, desc, money, redirectTo, avatar } = this.props;
+        console.log('个人中心', this.props);
+        
         if (!user) {
             if (redirectTo) {
                 return <Redirect to={redirectTo} />
@@ -37,7 +39,7 @@ class Me extends React.Component {
 
                 <Button onClick={this.logout}>退出登录</Button>
                 <Result
-                    img={<img style={{ width: 50, height: 50 }} src={require('../images/h00001.png')} alt="" />}
+                    img={<img style={{ width: 50, height: 50 }} src={require(`../images/${avatar}`)} alt="" />}
                     title={user}
                     message={type === 'boss' ? company : null}
                 />

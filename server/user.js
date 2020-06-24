@@ -25,13 +25,22 @@ Router.get('/list', (req, res) => {
 })
 
 Router.get('/getmsglist', (req, res) => {
-    const { user } = req.cookies;
-    const a = { '$or': [{ from: user, to: user }] };
-    Chat.find({}, (err, doc) => {
+    const { userid } = req.cookies;
+    const users = {};
+    User.find({}, (err, doc) => {
         if (err) {
             return res.json({ code: 1, msgs: doc });
         }
-        return res.json({ code: 0, msgs: doc });
+        doc.forEach(v => {
+            users[v._id] = { name: v.user, avatar: v.avatar };
+        })
+    })
+    const a = { '$or': [{ from: userid }, { to: userid }] };
+    Chat.find(a, (err, doc) => {
+        if (err) {
+            return res.json({ code: 1, msgs: doc });
+        }
+        return res.json({ code: 0, msgs: doc, users });
     })
 })
 
@@ -91,9 +100,7 @@ Router.post('/update', (req, res) => {
         return res.json({ success: false, code: 1, message: 'cookie数据不正确' });
     }
     const { body } = req;
-    console.log('updete body', userid, body);
     User.findByIdAndUpdate(userid, body, (err, doc) => {
-        console.log('updete doc', err, doc);
         if (err) {
             return res.json({ success: false, code: 1, message: err })
         }
@@ -105,7 +112,6 @@ Router.post('/update', (req, res) => {
             user: doc.user,
             type: doc.type,
         }, body)
-        console.log('data', data);
         return res.json({ success: true, code: 0, data })
     })
 })
