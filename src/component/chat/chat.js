@@ -1,6 +1,6 @@
 import React from 'react';
 import './chat.css'
-import { List, InputItem, NavBar } from 'antd-mobile';
+import { List, InputItem, NavBar, Icon } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { getMsgList, sendMsg, recvMsg } from '../../redux/chat.redux';
 
@@ -30,6 +30,12 @@ class Chat extends React.Component {
         sendMsg({ from, to, msg })
         this.setState({ text: '' })
     }
+
+    onLeftClick = () => {
+        const { history } = this.props;
+        history.goBack();
+    }
+
     render() {
         const { text } = this.state;
         const { chat, match } = this.props;
@@ -37,20 +43,40 @@ class Chat extends React.Component {
         const { user: userid } = match.params
         const { users } = chat;
         if (!users || !users[userid]) {
-            // return null;
+            return null;
         }
         const userInfo = users[userid] || {};
         const { name } = userInfo || {};
         return (
             <div id='chat-page'>
-                <NavBar mode='dark'>{name}</NavBar>
+                <NavBar
+                    mode='dark'
+                    leftContent={<Icon type='left' />}
+                    onLeftClick={this.onLeftClick}
+                >
+                    {name}
+                </NavBar>
                 <List>
                     {chatmsg.map(item => {
                         const { _id, content, from } = item;
+                        const fromInfo = users[from] || {};
+                        const { avatar } = fromInfo || {};
+                        const avatarIcon = require(`../images/${avatar}`);
+
                         return from === userid ? (
-                            <List.Item key={_id} >对方发来的:{content}</List.Item>
+                            <List.Item
+                                key={_id}
+                                thumb={avatarIcon} >
+                                {content}
+                            </List.Item>
                         ) : (
-                                <List.Item className='chat-me' key={_id} extra={'我的'} >我发的:{content}</List.Item>
+                                <List.Item
+                                    className='chat-me'
+                                    key={_id}
+                                    extra={<img src={avatarIcon} alt='' />}
+                                >
+                                    我发的:{content}
+                                </List.Item>
                             )
                     })}
                 </List>
