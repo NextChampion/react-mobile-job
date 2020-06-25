@@ -10,6 +10,12 @@ class Message extends React.Component {
     getList = (arr) => {
         return arr[arr.length -1]
     }
+
+    onMsgClick = (targetId) => {
+        const { history } = this.props;
+        history.push(`/chat/${targetId}`)
+    }
+    
     render() {
         const msgGroup = {};
         const { chat , user} = this.props;
@@ -24,16 +30,8 @@ class Message extends React.Component {
             msgGroup[v.chatid].push(v);
         });
         chatList = Object.values(msgGroup).sort((a, b) => {
-            console.log(a);
-            console.log(b);
-            console.log('new Date().getTime()', new Date().getTime());
-            
             const a_last = this.getList(a).create_time;
             const b_last = this.getList(b).create_time;
-            console.log('a_last', a_last);
-            console.log('b_last', b_last);
-            console.log('b_last - a_last', b_last - a_last);
-            
             return b_last - a_last;
          });
         return (
@@ -52,9 +50,11 @@ class Message extends React.Component {
                         const icon = require(`../../component/images/${avatar || 'h00001.png'}`);
                        return (
                            <List.Item
-                               key={last._id}
-                               thumb={icon}
-                                extra={<Badge text={unread}></Badge>}
+                                key={last._id}
+                                thumb={icon}
+                                arrow="horizontal"
+                               extra={<Badge text={unread}></Badge>}
+                               onClick={() =>this.onMsgClick(targetId)}
                            >
                                {content}
                                <Brief>{name|| '对方的名字'}</Brief>
