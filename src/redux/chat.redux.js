@@ -2,7 +2,7 @@
  * @Author: zhangcunxia
  * @Email: zcx4150@gmail.com
  * @Date: 2020-06-21 23:08:54
- * @LastEditTime: 2020-06-24 23:13:30
+ * @LastEditTime: 2020-06-25 15:37:39
  * @LastEditors: zhangcunxia
  * @Description:
  */
@@ -37,9 +37,13 @@ export default function chat(state = initState, action) {
             return { ...state, chatmsg: [...state.chatmsg, payload.msg], unread: state.unread + n }
         }
         case MSG_READ:
-
-            break;
-
+            const { payload } = action;
+            const { num } = payload;
+            return {
+                ...state,
+                chatmsg: state.chatmsg.map(v => ({...v, read : true})),
+                unread: state.unread - num || 0
+            };
         default:
             return state;
     }
@@ -53,12 +57,15 @@ function msgRecv(msg, userid) {
     return { type: MSG_RECV, payload: {msg, userid} }
 }
 
+function msgRead({from, userid, num}) {
+    return { type: MSG_READ, payload: { from, userid, num } };
+}
+
 export function getMsgList() {
     return (dispatch, getState) => {
         Axios.get('/user/getmsglist')
             .then(res => {
                 if (res.status === 200 && res.data.code === 0) {
-                    console.log('ssss', getState());
                     const { user } = getState() || {};
                     const userid = user._id;
                     dispatch(msgList(res.data.msgs, res.data.users, userid))
@@ -79,6 +86,21 @@ export function recvMsg() {
             const { user } = getState() || {};
             const userid = user._id;
             dispatch(msgRecv(msg, userid))
+        })
+    }
+}
+
+
+export function  readMsg(from) {
+    return (dispatch, getState) => {
+        Axios.post('/user/readmsg', { from }).then(res => {
+            console.log('resss', res);
+            
+            const {user} = getState() || {};
+            const { _id: userid } = user || {};
+            if (res.status === 200 && res.data.code === 0) {
+                dispatch(msgRead({ from, userid, num: res.data.num }));
+            }
         })
     }
 }

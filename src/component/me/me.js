@@ -26,8 +26,6 @@ class Me extends React.Component {
 
     render() {
         const { user, type, company, title, desc, money, redirectTo, avatar } = this.props;
-        console.log('个人中心', this.props);
-        
         if (!user) {
             if (redirectTo) {
                 return <Redirect to={redirectTo} />

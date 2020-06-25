@@ -2,22 +2,32 @@ import React from 'react';
 import './chat.css'
 import { List, InputItem, NavBar, Icon, Grid} from 'antd-mobile';
 import { connect } from 'react-redux';
-import { getMsgList, sendMsg, recvMsg } from '../../redux/chat.redux';
+import { getMsgList, sendMsg, recvMsg, readMsg } from '../../redux/chat.redux';
 import { getChatId } from '../../util';
 
 @connect(
     state => state,
-    { getMsgList, sendMsg, recvMsg }
+    { getMsgList, sendMsg, recvMsg, readMsg }
 )
 class Chat extends React.Component {
     state = { text: '' , showEmoji: false}
     componentDidMount() {
-        const { chat, getMsgList,recvMsg } = this.props;
+        const { chat, getMsgList,recvMsg, readMsg, match } = this.props;
         const { chatmsg } = chat || {}
         if (!chatmsg ||!chatmsg.length) {
             getMsgList();
             recvMsg()
         }
+        const { params } = match || {};
+        const { user } = params || {};
+        readMsg && readMsg(user);
+    }
+
+    componentWillUnmount() {
+        const { readMsg, match } = this.props;
+        const { params } = match || {};
+        const { user } = params || {};
+        readMsg && readMsg(user);
     }
 
     handleSubmit = () => {

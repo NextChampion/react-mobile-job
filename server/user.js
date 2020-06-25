@@ -44,6 +44,22 @@ Router.get('/getmsglist', (req, res) => {
     })
 })
 
+Router.post('/readmsg', (req, res) => {
+    const { userid } = req.cookies;
+    const { from } = req.body;
+    Chat.update(
+        { from, to: userid },
+        { '$set': { read: true } },
+        { 'multi': true },
+        (err, doc) => {
+            if (err) {
+                return res.json({code: 1, msg: '修改失败'})
+            }
+            const { nModified } = doc;
+        return res.json({ code: 0, num: nModified });
+    })
+})
+
 // 用户注册
 Router.post('/register', (req, res) => {
     // 解析出来post过来的信息
