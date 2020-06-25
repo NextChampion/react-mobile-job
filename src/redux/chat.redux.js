@@ -2,7 +2,7 @@
  * @Author: zhangcunxia
  * @Email: zcx4150@gmail.com
  * @Date: 2020-06-21 23:08:54
- * @LastEditTime: 2020-06-25 15:37:39
+ * @LastEditTime: 2020-06-25 15:40:27
  * @LastEditors: zhangcunxia
  * @Description:
  */
@@ -38,10 +38,10 @@ export default function chat(state = initState, action) {
         }
         case MSG_READ:
             const { payload } = action;
-            const { num } = payload;
+            const { num, from } = payload;
             return {
                 ...state,
-                chatmsg: state.chatmsg.map(v => ({...v, read : true})),
+                chatmsg: state.chatmsg.map(v => ({...v, read: from === v.from ? true : v.read})),
                 unread: state.unread - num || 0
             };
         default:
