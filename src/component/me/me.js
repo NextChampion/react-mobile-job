@@ -39,7 +39,7 @@ class Me extends React.Component {
 
                 <Button onClick={this.logout}>退出登录</Button>
                 <Result
-                    img={<img style={{ width: 50, height: 50 }} src={require(`../images/${avatar}`)} alt="" />}
+                    img={<img style={{ width: 50, height: 50 }} src={require(`../images/${avatar||'h00001.png'}`)} alt="" />}
                     title={user}
                     message={type === 'boss' ? company : null}
                 />

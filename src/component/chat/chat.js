@@ -81,7 +81,7 @@ class Chat extends React.Component {
                         const { _id, content, from } = item;
                         const fromInfo = users[from] || {};
                         const { avatar } = fromInfo || {};
-                        const avatarIcon = require(`../images/${avatar}`);
+                        const avatarIcon = require(`../images/${avatar|| 'h00001.png'}`);
 
                         return from === userid ? (
                             <List.Item

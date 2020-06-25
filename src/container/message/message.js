@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { List } from 'antd-mobile';
+import { List, Badge } from 'antd-mobile';
 import { Brief } from 'antd-mobile/lib/list/ListItem';
 
 @connect(
@@ -23,15 +23,27 @@ class Message extends React.Component {
             msgGroup[v.chatid] = msgGroup[v.chatid] || [];
             msgGroup[v.chatid].push(v);
         });
-         chatList = Object.values(msgGroup);
+        chatList = Object.values(msgGroup).sort((a, b) => {
+            console.log(a);
+            console.log(b);
+            console.log('new Date().getTime()', new Date().getTime());
+            
+            const a_last = this.getList(a).create_time;
+            const b_last = this.getList(b).create_time;
+            console.log('a_last', a_last);
+            console.log('b_last', b_last);
+            console.log('b_last - a_last', b_last - a_last);
+            
+            return b_last - a_last;
+         });
         return (
             <div>
-                Message
                 <List>
                     {chatList.map(v => {
                         const last = this.getList(v);
                         const { content, to,from } = last || {};
                         const targetId = mineId === to ? from : to;
+                        const unread = v.filter(v => !v.read && v.to ===mineId).length
                         const targetUserInfo = users[targetId] || {};
                         if (!targetUserInfo) {
                             return null;
@@ -42,6 +54,7 @@ class Message extends React.Component {
                            <List.Item
                                key={last._id}
                                thumb={icon}
+                                extra={<Badge text={unread}></Badge>}
                            >
                                {content}
                                <Brief>{name|| '对方的名字'}</Brief>
